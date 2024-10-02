@@ -61,7 +61,7 @@ export default function CarList() {
     {
       field: 'selling_price',
       headerName: 'Preço de venda',
-      width: 120,
+      width: 130,
       // valueFormatter: (params) =>
       //   params.selling_price?.toLocaleString('pt-BR', {
       //     style: 'currency',
@@ -74,6 +74,12 @@ export default function CarList() {
               currency: 'BRL',
             }).format(value)
           : '',
+    },
+    {
+      field: 'customer',
+      headerName: 'Cliente',
+      width: 250,
+      renderCell: (value) => (value.row?.customer?.name),
     },
     {
       field: '_edit',
@@ -128,7 +134,7 @@ export default function CarList() {
   async function fetchData() {
     showWaiting(true)
     try {
-      const result = await myfetch.get('/cars')
+      const result = await myfetch.get('/cars?include=customer')
       setState({
         ...state,
         cars: result,
