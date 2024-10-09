@@ -25,7 +25,6 @@ export default function CarForm() {
     que, devido ao funcionamento do componente DatePicker, deve
     iniciar valendo null.
   */
-
   const formDefaults = {
     brand: '',
     model: '',
@@ -34,7 +33,7 @@ export default function CarForm() {
     imported: false,
     plates: '',
     selling_date: null,
-    customers: ''
+    customer_id: ''
   }
 
   const [state, setState] = React.useState({
@@ -148,7 +147,7 @@ export default function CarForm() {
     showWaiting(true)
     try {
 
-      let car = { ...formDefaults}, customers = []
+      let car = { ...formDefaults }, customers = []
 
       // Busca a lista de clientes para preencher o combo de escolha
       // do cliente que comprou o carro
@@ -156,20 +155,20 @@ export default function CarForm() {
 
       // Se houver parâmetro na rota, precisamos buscar o carro para
       // ser editado
-
-      if(params.id){
+      if(params.id) {
 
         car = await myfetch.get(`/cars/${params.id}`)
 
         // Converte o formato de data armazenado no banco de dados
         // para o formato reconhecido pelo componente DatePicker
-      
+        
         if(car.selling_date) {
           car.selling_date = parseISO(car.selling_date)
         }
       }
 
       setState({ ...state, car, customers })
+
     } catch (error) {
       console.error(error)
       notify(error.message, 'error')
@@ -189,6 +188,14 @@ export default function CarForm() {
 
     // Navega de volta para a página de listagem
     navigate('..', { relative: 'path', replace: true })
+  }
+
+  function handleKeyDown(event) {
+    if(event.key === 'Delete') {
+      const stateCopy = {...state}
+      stateCopy.car.customer_id = null
+      setState(stateCopy)
+    }
   }
 
   return (
@@ -341,11 +348,12 @@ export default function CarForm() {
             variant='filled'
             required
             fullWidth
-            value={car.customers_id}
+            value={car.customer_id}
             onChange={handleFieldChange}
+            onKeyDown={handleKeyDown}
             select
-            helperText={inputErrors?.customers_id}
-            error={inputErrors?.customers_id}
+            helperText={inputErrors?.customer_id || 'Tecle DEL para limpar o cliente'}
+            error={inputErrors?.customer_id}
           >
             {customers.map((c) => (
               <MenuItem key={c.id} value={c.id}>

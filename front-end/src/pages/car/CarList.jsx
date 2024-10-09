@@ -61,7 +61,7 @@ export default function CarList() {
     {
       field: 'selling_price',
       headerName: 'Preço de venda',
-      width: 130,
+      width: 120,
       // valueFormatter: (params) =>
       //   params.selling_price?.toLocaleString('pt-BR', {
       //     style: 'currency',
@@ -79,7 +79,7 @@ export default function CarList() {
       field: 'customer',
       headerName: 'Cliente',
       width: 250,
-      renderCell: (value) => (value.row?.customer?.name),
+      renderCell: (value) => value.row?.customer?.name
     },
     {
       field: '_edit',

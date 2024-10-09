@@ -21,7 +21,7 @@ controller.retrieveAll = async function(req, res) {
   try {
     const result = await prisma.customer.findMany({
       orderBy: [
-        {name: 'asc'}
+        { name: 'asc' }
       ],
       include: {
         cars: req.query.include === 'cars'
