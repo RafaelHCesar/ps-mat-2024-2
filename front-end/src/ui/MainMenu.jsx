@@ -49,6 +49,12 @@ export default function MainMenu() {
       requiresAuth: true
     },
     {
+      children: 'Listagem de usuários',
+      to: '/users',
+      divider: true,
+      requiresAuth: true
+    },
+    {
       children: 'Sobre o autor',
       to: '/about',
       divider: false

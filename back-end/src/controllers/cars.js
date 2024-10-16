@@ -4,6 +4,13 @@ const controller = {}     // Objeto vazio
 
 controller.create = async function(req, res) {
   try {
+    // Preenche qual usuaário criou o carro com o id do usuário autenticado
+    req.body.created_user_id = req.authUser.id
+
+    // Preenche qual usua-ário modificou por último o carro com o id
+    // do usuário autenticado
+    req.body.updated_user_id = req.authUser.id
+
     await prisma.car.create({ data: req.body })
 
     // HTTP 201: Created
@@ -19,6 +26,9 @@ controller.create = async function(req, res) {
 
 controller.retrieveAll = async function(req, res) {
   try {
+
+    const included_rels = req.query.include?.split(',') ?? []
+
     const result = await prisma.car.findMany({
       orderBy: [
         { brand: 'asc' },
@@ -26,7 +36,9 @@ controller.retrieveAll = async function(req, res) {
         { id: 'asc' }
       ],
       include: {
-        customer: req.query.include === 'customer'
+        customer: included_rels.includes('customer'),
+        created_user: included_rels.includes('created_user'),
+        updated_user: included_rels.includes('updated_user')
       }
     })
 
@@ -43,10 +55,15 @@ controller.retrieveAll = async function(req, res) {
 
 controller.retrieveOne = async function(req, res) {
   try {
+
+    const included_rels = req.query.include?.split(',') ?? []
+
     const result = await prisma.car.findUnique({
       where: { id: Number(req.params.id) },
       include: {
-        customer: req.query.include === 'customer'
+        customer: included_rels.includes('customer'),
+        created_user: included_rels.includes('created_user'),
+        updated_user: included_rels.includes('updated_user')
       }
     })
 
@@ -65,6 +82,11 @@ controller.retrieveOne = async function(req, res) {
 
 controller.update = async function(req, res) {
   try {
+
+    // Preenche qual usua-ário modificou por último o carro com o id
+    // do usuário autenticado
+    req.body.updated_user_id = req.authUser.id
+
     const result = await prisma.car.update({
       where: { id: Number(req.params.id) },
       data: req.body
