@@ -18,46 +18,60 @@ export default function MainMenu() {
 
   const { authUser } = React.useContext(AuthUserContext)
 
+  /*
+    authlevel para o menu principal:
+    * Nivel 0: o menu sempre é exibido, idependentemente de haver usuario autenticado
+    * Nivel 1: o menu será exibido apenas se houver usuario autenticado
+    * NIvel 2: o menu sera exibido apenas se o usuario autenticado for administrador
+  */
+
   const menuItems = [
     {
       children: 'Página inicial',
       to: '/',
-      divider: true
+      divider: true,
+      authlevel: 0
     },
     {
       children: 'Listagem de veículos',
       to: '/cars',
       divider: false,
-      requiresAuth: true
+      requiresAuth: true,
+      authlevel: 1
     },
     {
       children: 'Cadastro de veículos',
       to: '/cars/new',
       divider: true,
-      requiresAuth: true
+      requiresAuth: true,
+      authlevel: 1
     },
     {
       children: 'Listagem de clientes',
       to: '/customers',
       divider: false,
-      requiresAuth: true
+      requiresAuth: true,
+      authlevel: 1
     },
     {
       children: 'Cadastro de clientes',
       to: '/customers/new',
       divider: true,
-      requiresAuth: true
+      requiresAuth: true,
+      authlevel: 1
     },
     {
       children: 'Cadastro de usuários',
       to: '/users',
       divider: true,
-      requiresAuth: true
+      requiresAuth: true,
+      authlevel: 2
     },
     {
       children: 'Sobre o autor',
       to: '/about',
-      divider: false
+      divider: false,
+      authlevel: 0
     },
   ]
 
@@ -87,7 +101,11 @@ export default function MainMenu() {
       >
         {
           menuItems.map(item => {
-            if(!(item?.requiresAuth) || (item?.requiresAuth && authUser)) {
+            if(
+              (item.authlevel === 0) ||
+              (item.authlevel === 1 && authUser) ||
+              (item.authlevel === 2 && authUser?.is_admin)
+            ) {
               return <MenuItem 
                 key={item.to} 
                 onClick={handleClose} 
