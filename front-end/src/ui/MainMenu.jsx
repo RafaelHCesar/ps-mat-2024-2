@@ -49,7 +49,7 @@ export default function MainMenu() {
       requiresAuth: true
     },
     {
-      children: 'Listagem de usuários',
+      children: 'Cadastro de usuários',
       to: '/users',
       divider: true,
       requiresAuth: true
