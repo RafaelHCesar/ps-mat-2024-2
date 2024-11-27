@@ -13,9 +13,8 @@ const app = express()
 import cors from 'cors'
 
 app.use(cors({
-  //origin: process.env.FRONT_END_URL.split(','),
-  origin: '*',
-  //credentials: true   // Grava cookie no front-end
+  origin: process.env.FRONT_END_URL.split(','),
+  credentials: true   // Grava cookie no front-end
 }))
 
 app.use(logger('dev'))
