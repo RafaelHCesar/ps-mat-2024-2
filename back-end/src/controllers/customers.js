@@ -7,7 +7,7 @@ const controller = {}     // Objeto vazio
 controller.create = async function (req, res) {
   try {
 
-    // Chama a validação do Zod para o cliente
+    // Chama a validação do Zod para o customer
     Customer.parse(req.body)
 
     await prisma.customer.create({ data: req.body })

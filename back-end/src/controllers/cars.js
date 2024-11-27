@@ -7,7 +7,7 @@ const controller = {}     // Objeto vazio
 controller.create = async function (req, res) {
   try {
 
-    // Chama a validação do Zod para o cliente
+    // Chama a validação do Zod para o carro
     Car.parse(req.body)
 
     // Preenche qual usuário criou o carro com o id do usuário autenticado
