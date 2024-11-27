@@ -15,7 +15,7 @@ import cors from 'cors'
 app.use(cors({
   //origin: process.env.FRONT_END_URL.split(','),
   origin: '*',
-  credentials: true   // Grava cookie no front-end
+  //credentials: true   // Grava cookie no front-end
 }))
 
 app.use(logger('dev'))
